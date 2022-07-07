@@ -10,7 +10,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "Bacteria Sim");
     window.setFramerateLimit(100);
 
-    std::vector<sf::CircleShape> shape_list{};
+    std::vector<blob> shape_list{};
 
     while (window.isOpen()) {
         sf::Event event;
@@ -21,11 +21,13 @@ int main() {
                 window.close();
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && shape_list.size() > 0) {
                 window.clear();
-                std::cout << "Shape list was cleared \n removing " << shape_list.size() << " circles." << std::endl;
+                std::cout << "Shape list was cleared \n removed " << shape_list.size() << " circles." << std::endl;
                 shape_list.clear();
             } else if (event.type == event.MouseButtonReleased) {  // lMouse &&
                 // get the current mouse position in the window
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                //pixelPos.x -= 20;
+                //pixelPos.y -= 20;
                 std::cout << "Circle spawned @ (";
                 std::cout << pixelPos.x << ", " << pixelPos.y << ")" << std::endl;
 
@@ -42,7 +44,7 @@ int main() {
             }
         }
         window.clear();
-        for (auto circ : shape_list) window.draw(circ);
+        for (auto circ : shape_list) window.draw(circ.get_circle());
         window.display();
     }
 

@@ -4,13 +4,24 @@
 
 class blob {
    private:
-    std::vector<int> rgb_{255, 180, 0};
+    sf::CircleShape circle;
     sf::Vector2<float> pos{0., 0.};
     sf::Color color{255, 180, 0};
-    int speed = 2;
-    int size = 10;
+    float speed = 2.0;
+    float size = 10.0;
     void gravityUpdate();
 
    public:
-    blob(sf::Vector2<float> pos, std::vector<sf::CircleShape> &shape_list);
+    blob(sf::Vector2<float> pos, std::vector<blob>& shape_list);
+
+    void set_position(const sf::Vector2<float>& pos);
+    void set_color(sf::Color color);
+    void set_size(float size);
+    void set_speed(float speed);
+
+    sf::Vector2<float> get_position() const;
+    sf::Color get_color() const;
+    float get_size() const;
+    float get_speed() const;
+    sf::CircleShape get_circle();
 };
