@@ -26,3 +26,9 @@ float blob::get_size() const { return this->size; };
 float blob::get_speed() const { return this->speed; };
 sf::CircleShape blob::get_circle() { return this->circle; }
 
+void blob::gravUpdate() {
+    while (this->pos.y < 805) {
+        this->pos.y++;
+        }
+    }
+

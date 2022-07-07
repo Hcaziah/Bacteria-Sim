@@ -18,9 +18,12 @@ public:
     void set_size(float size);
     void set_speed(float speed);
 
+    
     sf::Vector2<float> get_position() const;
     sf::Color get_color() const;
     float get_size() const;
     float get_speed() const;
     sf::CircleShape get_circle();
+
+    void gravUpdate();
     };

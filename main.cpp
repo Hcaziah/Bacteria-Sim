@@ -30,7 +30,6 @@ int main() {
                 shape_list.clear();
                 }
             else if (event.type == event.MouseButtonReleased && lMouse) {
-
                 blob(worldPos, shape_list, mWheelSize);
                 lMouse = false;
                 }
@@ -47,7 +46,10 @@ int main() {
         grey.setFillColor(sf::Color(80, 80, 80, 80));
 
         window.clear();
-        for (auto circ : shape_list) window.draw(circ.get_circle());
+        for (auto circ : shape_list) {
+            circ.gravUpdate();
+            window.draw(circ.get_circle());
+            }
         window.draw(grey);
         window.display();
         }
