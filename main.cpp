@@ -6,15 +6,21 @@
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "Bacteria Sim");
-
     window.setFramerateLimit(100);
-    bool lMouse{false};
+
+    bool lMouse{ false };
+    float mWheelSize{ 10.0 };
 
     std::vector<blob> shape_list{};
 
     while (window.isOpen()) {
+        // get the current mouse position in the window
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+
+        // convert it to world coordinates
+        sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+
         sf::Event event;
-        sf::Vector2<int> mousePos = sf::Mouse::getPosition();
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 window.close();
@@ -22,24 +28,29 @@ int main() {
                 window.clear();
                 std::cout << "Removed " << shape_list.size() << " circles." << std::endl;
                 shape_list.clear();
-            } else if (event.type == event.MouseButtonReleased && lMouse) { 
-                // get the current mouse position in the window
-                sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                }
+            else if (event.type == event.MouseButtonReleased && lMouse) {
 
-                // convert it to world coordinates
-                sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-
-                blob(worldPos, shape_list);
+                blob(worldPos, shape_list, mWheelSize);
                 lMouse = false;
-            }
+                }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 lMouse = true;
+                }
+            if (event.type == sf::Event::MouseWheelMoved) {
+                mWheelSize += (event.mouseWheel.delta * 5);
+                }
             }
-        }
+        sf::CircleShape grey(mWheelSize);
+        grey.setOrigin(mWheelSize, mWheelSize);
+        grey.setPosition(worldPos);
+        grey.setFillColor(sf::Color(80, 80, 80, 80));
+
         window.clear();
         for (auto circ : shape_list) window.draw(circ.get_circle());
+        window.draw(grey);
         window.display();
-    }
+        }
 
     return 0;
-}
+    }
