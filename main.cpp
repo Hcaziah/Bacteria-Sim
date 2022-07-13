@@ -1,17 +1,23 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <stdlib.h> // rand
 
-#include "blob.cpp"
+#include "bacteri.cpp"
+
+int windowWidth = 1440;
+int windowHeight = 900;
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Bacteria Sim");
-    window.setFramerateLimit(100);
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Bacteria Sim");
+    window.setFramerateLimit(144);
 
     bool lMouse{ false };
+    bool num1{ false };
     float mWheelSize{ 10.0 };
 
-    std::vector<blob> shape_list{};
+    std::vector<bacteri> colony{};
 
     while (window.isOpen()) {
         // get the current mouse position in the window
@@ -24,33 +30,35 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 window.close();
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && shape_list.size() > 0) {
-                window.clear();
-                std::cout << "Removed " << shape_list.size() << " circles." << std::endl;
-                shape_list.clear();
-                }
-            else if (event.type == event.MouseButtonReleased && lMouse) {
-                blob(worldPos, shape_list, mWheelSize);
-                lMouse = false;
-                }
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !lMouse) {
                 lMouse = true;
                 }
-            if (event.type == sf::Event::MouseWheelMoved) {
-                mWheelSize += (event.mouseWheel.delta * 5);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && colony.size() > 0) {
+                window.clear();
+                std::cout << "Removed " << colony.size() << " bacteri." << std::endl;
+                colony.clear();
+                }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && !num1) {
+                for (int i = 0; i < 100; i++) {
+                    sf::Vector2<float> rand_pos(rand() % windowWidth, rand() % windowHeight);
+                    bacteri(colony, rand_pos, rand() % 10 + 10, true);
+                    }
+                num1 = true;
+                }
+            if (event.type == event.MouseButtonReleased && lMouse) {
+                lMouse = false;
+                }
+            if (event.type == event.KeyReleased && num1) {
+                num1 = false;
                 }
             }
-        sf::CircleShape grey(mWheelSize);
-        grey.setOrigin(mWheelSize, mWheelSize);
-        grey.setPosition(worldPos);
-        grey.setFillColor(sf::Color(80, 80, 80, 80));
+
 
         window.clear();
-        for (auto circ : shape_list) {
-            circ.gravUpdate();
-            window.draw(circ.get_circle());
+        for (auto bacteri : colony) {
+            bacteri.move();
+            window.draw(bacteri.shape());
             }
-        window.draw(grey);
         window.display();
         }
 
