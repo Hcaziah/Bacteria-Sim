@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
+#include <map>
 
 bacteri::bacteri(std::vector<bacteri>& list, sf::Vector2<float> pos, float size, bool randC) {
     this->position_ = pos;
@@ -39,16 +40,28 @@ float bacteri::speed() const {
     }
 
 void bacteri::position(sf::Vector2<float> pos) {
-    this->position_ = pos;
+    this->circle.setPosition(pos);
     }
 
 void bacteri::position(float x, float y) {
-    sf::Vector2<float> pos{ x, y };
-    this->position_ = pos;
+    this->circle.setPosition(x, y);
     }
 
 sf::Vector2<float> bacteri::position() const {
-    return this->position_;
+    return this->circle.getPosition();
+    }
+
+void bacteri::position2(sf::Vector2<float> pos) {
+    this->position2_ = pos;
+    }
+
+void bacteri::position2(float x, float y) {
+    sf::Vector2<float> temp{ x, y };
+    this->position2(temp);
+    }
+
+sf::Vector2<float> bacteri::position2() const {
+    return this->position2_;
     }
 
 void bacteri::color(sf::Color color) {
@@ -63,10 +76,19 @@ sf::CircleShape bacteri::shape() const {
     return this->circle;
     }
 
-void bacteri::move() {
+void bacteri::moveRand() {
     int direction = rand() % 360;
-    float x_pos = this->speed() * cos(direction);
-    float y_pos = this->speed() * sin(direction);
-    std::cout << "(" << x_pos << ", " << y_pos << ")@" << direction << std::endl;
-    this->position(this->position_.x + x_pos, this->position_.y + y_pos);
+    this->direction = direction;
+    const sf::Vector2<float>& current_pos = this->position();
+    this->position2_.x = current_pos.x + (this->distance_ * cos(direction));
+    this->position2_.y = current_pos.y + (this->distance_ * sin(direction));
+    }
+
+std::vector<sf::Vector2<float>> bacteri::move() {
+    std::vector<sf::Vector2<float>> point_map{};
+    for (int i = 0; i < 10; i++) {
+        float x_pos = x_pos * (i / 10);
+        float y_pos = y_pos * (i / 10);
+        point_map.push_back();
+        }
     }
