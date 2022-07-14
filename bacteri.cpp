@@ -82,13 +82,19 @@ void bacteri::moveRand() {
     const sf::Vector2<float>& current_pos = this->position();
     this->position2_.x = current_pos.x + (this->distance_ * cos(direction));
     this->position2_.y = current_pos.y + (this->distance_ * sin(direction));
+    this->circle.setPosition(position2());
     }
 
 std::vector<sf::Vector2<float>> bacteri::move() {
-    std::vector<sf::Vector2<float>> point_map{};
+    // interpolation: 
+    // y = y1 + (x- x1) * ((y2-y1)/(x2-x1))
+    //
+    // use a pointer to point down the array,
+    // when it hits the end reset the pointer 
+    // and create a new list.
+        std::vector<sf::Vector2<float>> point_map{};
     for (int i = 0; i < 10; i++) {
         float x_pos = x_pos * (i / 10);
         float y_pos = y_pos * (i / 10);
-        point_map.push_back();
         }
     }

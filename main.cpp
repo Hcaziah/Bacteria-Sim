@@ -11,7 +11,7 @@ int windowHeight = 900;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Bacteria Sim");
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(100);
 
     bool lMouse{ false };
     bool num1{ false };
@@ -51,17 +51,18 @@ int main() {
                     sf::Vector2<float> rand_pos(rand() % windowWidth, rand() % windowHeight);
                     bacteri(colony, rand_pos, rand() % 10 + 10, true);
                     }
-                num1 = true;
-                if (event.type == event.MouseButtonReleased && lMouse) {
-                    lMouse = false;
-                    }
-                if (event.type == event.KeyReleased && num1) {
-                    num1 = false;
-                    }
-                if (event.type == event.KeyReleased && num2) {
-                    num2 = false;
-                    }
+                num2 = true;
                 }
+            if (event.type == event.MouseButtonReleased && lMouse) {
+                lMouse = false;
+                }
+            if (event.type == event.KeyReleased && num1) {
+                num1 = false;
+                }
+            if (event.type == event.KeyReleased && num2) {
+                num2 = false;
+                }
+
             }
 
 
@@ -71,7 +72,7 @@ int main() {
         for (auto bacteri : colony) {
             bacteri.moveRand();
             std::cout << itt << " - (" << bacteri.position().x << ", " << bacteri.position().y << ") -> (" << bacteri.position2().x << ", " << bacteri.position2().y << ")" << std::endl;
-            bacteri.move();
+            //bacteri.move();
             window.draw(bacteri.shape());
             itt++;
             }
